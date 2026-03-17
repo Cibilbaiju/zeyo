@@ -1,92 +1,315 @@
-# Zeyo - Smart On-Demand Home Service Platform
+# 🚀 Zeyo — Smart On-Demand Home Service Platform
 
-> [!IMPORTANT]
-> **🚧 Development Status:** This project is currently in the **Developing Stage**. Features and APIs are subject to change as we work towards a stable release.
+> ⚡ A next-generation full-stack platform for seamless home services, real-time tracking, and scalable operations.
 
-Zeyo is a comprehensive monorepo containing a full-stack on-demand home service platform. It integrates a scalable backend, a high-performance admin dashboard, and dual-sided mobile applications for both consumers and service providers.
+---
 
-## 🏗 Project Architecture
+## ⚠️ Development Status
 
-The project is organized as a monorepo to ensure seamless integration between services:
+> 🚧 **Currently in Active Development**  
+Zeyo is evolving rapidly. Features, APIs, and architecture may change as we move toward production readiness.
 
-*   **[`backend/`](./backend)**: High-performance API server built with Node.js and Express. Handles real-time communication via Socket.io and utilizes Redis/Kafka for scalability.
-*   **[`dashboard/`](./dashboard)**: A modern, responsive admin oversight panel built with Next.js 15 and Tailwind CSS.
-*   **[`zeyo_app/`](./zeyo_app)**: The consumer-facing Flutter application for booking and tracking services.
-*   **[`zeyosrv_app/`](./zeyosrv_app)**: The service provider-facing Flutter application for managing jobs and earnings.
+---
 
-## 🚀 Technical Stack
+## 🌟 Overview
 
-### Backend
-- **Framework**: Node.js, Express
-- **Database**: PostgreSQL (Prisma/PG)
-- **Real-time**: Socket.io
-- **Queue/Streaming**: Apache Kafka
-- **Caching**: Redis
-- **Security**: JWT Authentication, Bcrypt hashing
-- **Integration**: Twilio (OTP Verification), Google Maps API
+Zeyo is a **production-grade, scalable on-demand home service ecosystem** designed to connect customers with service providers in real-time.
 
-### Admin Dashboard
-- **Framework**: Next.js 15 (App Router)
-- **Styling**: Tailwind CSS, Shadcn/ui
-- **State Management**: Zustand, React Query
-- **Charts**: Recharts
-- **Icons**: Lucide React
+It combines:
 
-### Mobile Applications (Consumer & Provider)
-- **Framework**: Flutter (Dart)
-- **Navigation**: Go Router
-- **State Management**: Provider
-- **Mapping**: Google Maps SDK
-- **Animations**: Lottie, Flutter Animate
+- ⚡ High-performance backend  
+- 📊 Intelligent admin dashboard  
+- 📱 Dual Flutter mobile applications  
+- 🔄 Real-time communication & tracking  
 
-## ✨ Key Features
+---
 
-- **OTP Authentication**: Secure login via Twilio SMS verification.
-- **Geospatial Tracking**: Real-time tracking of service providers using Google Maps.
-- **Service Management**: Dynamic booking system with categorized services.
-- **Admin Oversight**: Comprehensive dashboard for managing users, service providers, and bookings.
-- **Micro-interactions**: Fluid UI with high-quality animations across web and mobile.
+## 🏗 Monorepo Architecture
+
+```
+zeyo/
+│
+├── backend/            # Core backend APIs, auth, sockets, queues
+├── dashboard/          # Admin control panel (Next.js)
+├── zeyo_app/           # Customer mobile application
+├── zeyosrv_app/        # Service provider mobile app
+│
+├── .github/workflows/  # CI/CD automation
+├── .vscode/            # Dev configs
+├── LICENSE
+└── README.md
+```
+
+---
+
+## 🧠 System Architecture (High-Level)
+
+```
+            ┌────────────────────┐
+            │   Mobile Apps      │
+            │ (User & Provider)  │
+            └────────┬───────────┘
+                     │
+                     ▼
+            ┌────────────────────┐
+            │   API Gateway      │
+            │ (Node + Express)   │
+            └────────┬───────────┘
+                     │
+     ┌───────────────┼───────────────┐
+     ▼               ▼               ▼
+ PostgreSQL       Redis          Kafka
+(Database)       (Cache)     (Event Stream)
+                     │
+                     ▼
+            ┌────────────────────┐
+            │   Admin Dashboard  │
+            └────────────────────┘
+```
+
+---
+
+## 🚀 Tech Stack
+
+### 🔧 Backend
+- Node.js + Express  
+- PostgreSQL + Prisma  
+- Socket.io  
+- Apache Kafka  
+- Redis  
+- JWT Authentication  
+- Bcrypt  
+- Twilio API  
+- Google Maps API  
+
+---
+
+### 🖥 Admin Dashboard
+- Next.js 15 (App Router)  
+- Tailwind CSS + Shadcn/ui  
+- Zustand + React Query  
+- Recharts  
+- Lucide React  
+
+---
+
+### 📱 Mobile Applications
+- Flutter (Dart)  
+- Provider  
+- Go Router  
+- Google Maps SDK  
+- Lottie Animations  
+- Flutter Animate  
+
+---
+
+## ✨ Core Features
+
+### 🔐 Authentication & Security
+- OTP-based login via Twilio  
+- JWT session handling  
+- Secure password hashing  
+
+---
+
+### 📍 Real-Time Tracking
+- Live provider tracking  
+- Route visualization  
+- Real-time updates using Socket.io  
+
+---
+
+### 🛠 Service Booking System
+- Category-based services  
+- Dynamic job allocation  
+- Smart provider matching  
+
+---
+
+### 🧑‍💼 Admin Dashboard
+- Manage users & providers  
+- Monitor bookings  
+- Analytics & insights  
+- System controls  
+
+---
+
+### 🔄 Real-Time Architecture
+- Kafka-based event streaming  
+- Instant notifications  
+- Scalable system design  
+
+---
+
+### 🎨 UI/UX Experience
+- Smooth animations (Lottie)  
+- Micro-interactions  
+- Clean and modern UI  
+
+---
+
+## 🔁 Booking Flow
+
+```
+1. User selects service
+2. Request sent to backend
+3. Nearby providers notified
+4. Provider accepts job
+5. Live tracking starts
+6. Service completed
+7. Payment & feedback
+```
+
+---
 
 ## 🛠 Getting Started
 
-### Prerequisites
-- Flutter SDK (v3.5.0+)
-- Node.js (v18+)
-- PostgreSQL, Redis, and Kafka (via Docker)
+### 📋 Prerequisites
 
-### Installation
-
-1.  **Clone the repository**:
-    ```bash
-    git clone https://github.com/Cibilbaiju/zeyo.git
-    cd zeyo
-    ```
-
-2.  **Backend Setup**:
-    ```bash
-    cd backend
-    npm install
-    # Create .env based on .env.example
-    npm run dev
-    ```
-
-3.  **Dashboard Setup**:
-    ```bash
-    cd dashboard
-    npm install
-    npm run dev
-    ```
-
-4.  **Mobile App Setup**:
-    ```bash
-    cd zeyo_app # or zeyosrv_app
-    flutter pub get
-    flutter run
-    ```
-
-## 🔒 Security Notice
-
-This repository has been hardened to prevent accidental exposure of sensitive information. All API keys (Google Maps, Twilio, etc.) are managed via environment variables and platform-specific secret files (like `local.properties` and `Secrets.plist`) which are strictly ignored by version control.
+- Flutter SDK (≥ 3.5.0)  
+- Node.js (≥ 18)  
+- Docker (PostgreSQL, Redis, Kafka)  
 
 ---
-© 2024 Zeyo Team. All rights reserved.
+
+### ⚙️ Installation
+
+#### 1️⃣ Clone Repository
+```
+git clone https://github.com/Cibilbaiju/zeyo.git
+cd zeyo
+```
+
+---
+
+#### 2️⃣ Backend Setup
+```
+cd backend
+npm install
+cp .env.example .env
+npm run dev
+```
+
+---
+
+#### 3️⃣ Dashboard Setup
+```
+cd dashboard
+npm install
+npm run dev
+```
+
+---
+
+#### 4️⃣ Mobile Apps
+
+**User App**
+```
+cd zeyo_app
+flutter pub get
+flutter run
+```
+
+**Provider App**
+```
+cd zeyosrv_app
+flutter pub get
+flutter run
+```
+
+---
+
+## 🔐 Environment Variables
+
+```
+DATABASE_URL=
+JWT_SECRET=
+REDIS_URL=
+KAFKA_BROKER=
+
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+
+GOOGLE_MAPS_API_KEY=
+```
+
+---
+
+## 🔒 Security Practices
+
+- Secrets stored in environment variables  
+- Sensitive files ignored via `.gitignore`  
+- Secure API authentication  
+- Protection against SQL injection & XSS  
+
+---
+
+## 📈 Scalability & Performance
+
+- Redis caching  
+- Kafka event streaming  
+- Modular architecture  
+- Optimized database queries  
+
+---
+
+## 🚀 Future Roadmap
+
+- Payment Integration (UPI, Stripe)  
+- AI-based recommendations  
+- Advanced analytics  
+- Multi-language support  
+- Voice-based booking  
+- Subscription system  
+
+---
+
+## 🤝 Contributing
+
+```
+# Fork the repo
+# Create a new branch
+git checkout -b feature/your-feature
+
+# Commit changes
+git commit -m "Add new feature"
+
+# Push changes
+git push origin feature/your-feature
+```
+
+---
+
+## 📜 License
+
+Apache 2.0 License
+
+---
+
+## 👨‍💻 Author
+
+Cibil Baiju  
+Full Stack Developer | Mobile App Developer | AI Enthusiast  
+
+---
+
+## ⭐ Support
+
+If you like this project:
+
+- Star the repository  
+- Fork it  
+- Contribute  
+
+---
+
+## 💡 Vision
+
+Zeyo aims to become a complete ecosystem for on-demand services focused on:
+
+- Speed  
+- Reliability  
+- Scalability  
+- Premium user experience  
+
+---
