@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeyo Loading Animation</title>
+    <link rel="stylesheet" href="loading_animation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container" id="loading-container">
+        <!-- Using the provided logo image for exact visual fidelity -->
+        <img src="logo.png" class="logo-img" alt="Zeyo">
+        <div class="loader-line"></div>
+    </div>
+
+    <div id="home-page" class="hidden">
+        <h1>Welcome to Zeyo</h1>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            const loadingContainer = document.getElementById('loading-container');
+            const homePage = document.getElementById('home-page');
+
+            // Simulate app initialization time (e.g. 3.5 seconds)
+            setTimeout(() => {
+                // 1. Fade out the loader
+                loadingContainer.classList.add('fade-out');
+
+                // 2. Prepare Home Page
+                homePage.classList.remove('hidden');
+
+                // 3. Fade in Home Page (slight overlap)
+                setTimeout(() => {
+                    homePage.classList.add('visible');
+                }, 400);
+
+            }, 3500);
+        });
+    </script>
+</body>
+
+</html>

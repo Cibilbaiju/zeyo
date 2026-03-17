@@ -1,0 +1,35 @@
+.DS_Store
+.idea/
+*.iml
+build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+pubspec.lock
+.git_backup/
+
+# Monorepo specific ignores
+**/node_modules/
+**/node_modules_trash/
+**/build/
+**/.env*
+**/*.log
+**/google-services.json
+**/GoogleService-Info.plist
+**/*.jks
+**/*.keystore
+**/secrets.properties
+**/secrets.xcconfig
+**/Secrets.plist
+
+# Flutter specific ignores
+zeyo_app/.env
+zeyosrv_app/.env
+zeyo_app/android/app/secrets.properties
+zeyosrv_app/android/app/secrets.properties
+
+# Backend and Dashboard ignores
+backend/.env
+dashboard/.env.local
+dashboard/.next/

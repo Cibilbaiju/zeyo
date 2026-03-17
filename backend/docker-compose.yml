@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: zeyo_backend
+    build: .
+    restart: always
+    ports:
+      - "5005:5005"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - PORT=5005
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/zeyo_db
+      - REDIS_URL=redis://redis:6379
+      - KAFKA_BROKERS=kafka:9092
+      - KAFKA_CLIENT_ID=zeyo-backend
+      - TWILIO_SID=${TWILIO_SID}
+      - TWILIO_TOKEN=${TWILIO_TOKEN}
+      - TWILIO_SERVICE_SID=${TWILIO_SERVICE_SID}
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+      - python_ai_service
+
+  python_ai_service:
+    container_name: zeyo_ai_service
+    build:
+      context: ./python_service
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./python_service:/app
+    environment:
+      - PORT=8000
+
+  postgres:
+    container_name: zeyo_postgres
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=zeyo_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - zeyo_postgres_data:/var/lib/postgresql/data
+      - ./src/models/schema.sql:/docker-entrypoint-initdb.d/init.sql
+
+  redis:
+    container_name: zeyo_redis
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - zeyo_redis_data:/data
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    container_name: zeyo_zookeeper
+    restart: always
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      KAFKA_HEAP_OPTS: "-Xmx256M -Xms256M"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: zeyo_kafka
+    restart: always
+
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_INTERNAL://localhost:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_HEAP_OPTS: "-Xmx512M -Xms512M"
+
+volumes:
+  zeyo_postgres_data:
+  zeyo_redis_data:

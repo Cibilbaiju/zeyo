@@ -1,0 +1,161 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    /* Uber Black */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 200px;
+    /* Constrain width for the loader line */
+}
+
+.logo {
+    color: #ffffff;
+    font-size: 4rem;
+    /* Prominent size like a splash screen */
+    font-weight: 500;
+    /* Clean, modern weight */
+    margin: 0 0 20px 0;
+    /* Space for the loader line below */
+    letter-spacing: -2px;
+    /* Tighter tracking for that modern tech feel */
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* 
+   Uber often uses a very subtle progress bar or a "breathing" logo.
+   Example: A thin line that grows/moves, or the logo itself pulsing.
+   Let's do a refined "indeterminate" line loader which is very common in their UI.
+*/
+.loader-line {
+    width: 100%;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.2);
+    /* Subtle track */
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out 0.3s forwards;
+    /* Delay appearance slightly */
+}
+
+.loader-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 30%;
+    /* Length of the moving segment */
+    background-color: #ffffff;
+    /* White filling */
+    animation: lineAnim 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    transform: translateX(-100%);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes lineAnim {
+    0% {
+        left: 0;
+        width: 0%;
+        transform: translateX(0);
+    }
+
+    50% {
+        width: 30%;
+        /* Grow */
+    }
+
+    100% {
+        left: 100%;
+        /* Move to right */
+        width: 0%;
+        /* Shrink at end */
+        transform: translateX(0);
+    }
+}
+
+/* Text Shimmer/Pulse Animation */
+@keyframes textPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+        /* Slight dim to create breathing effect */
+    }
+}
+
+.logo-img {
+    width: 250px;
+    /* Adjust size to match impact of previous text */
+    height: auto;
+    margin: 0 0 30px 0;
+
+    /* Invert colors: Black text -> White text */
+    filter: invert(1);
+
+    /* Animations */
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out forwards, textPulse 2s ease-in-out 0.8s infinite;
+}
+
+/* Transition Utilities */
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.8s ease-out;
+    pointer-events: none;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Home Page Styles */
+#home-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000000;
+    opacity: 0;
+    /* Star hidden */
+    transition: opacity 1s ease-in;
+}
+
+#home-page.visible {
+    opacity: 1;
+}

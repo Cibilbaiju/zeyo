@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zeyo-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zeyo-backend
+  template:
+    metadata:
+      labels:
+        app: zeyo-backend
+    spec:
+      containers:
+      - name: zeyo-backend
+        image: zeyo-backend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000
+        env:
+        - name: PORT
+          value: "3000"
+        - name: NODE_ENV
+          value: "development"
+        - name: DATABASE_URL
+          value: "postgresql://postgres:password@postgres:5432/zeyo_db"
+        - name: REDIS_URL
+          value: "redis://redis:6379"
+        - name: KAFKA_BROKERS
+          value: "kafka:9092"
+        - name: KAFKA_CLIENT_ID
+          value: "zeyo-backend"
+        # Secrets would ideally be K8s secrets, keeping simple for now
+        - name: TWILIO_SID
+          value: "YOUR_TWILIO_SID"
+        - name: TWILIO_TOKEN
+          value: "YOUR_TWILIO_TOKEN"
+        - name: TWILIO_SERVICE_SID
+          value: "YOUR_TWILIO_SERVICE_SID"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zeyo-backend-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: zeyo-backend
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
